@@ -3,8 +3,11 @@
 ## Requirements:
 
 PHP >= 8.1 (Installed seperately)
+
 Composer
+
 Mysql (Using Xampp)
+
 Git (Installed seperately)
 
 
