@@ -15,9 +15,9 @@ Git (Installed seperately)
 
 1. Clone Repository
 
-git clone  https://github.com/ches-cake/laravel-positions.git
+git clone  https://github.com/username/repo name.git
 
-cd laravel-positions
+cd repo name
 
 composer install
 
