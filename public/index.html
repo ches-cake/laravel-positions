@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Positions Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    input, select, button {
+      padding: 6px;
+      margin: 4px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+    }
+    th {
+      background: #f0f0f0;
+    }
+
+    /* Modal Styles */
+    #modalOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 99;
+    }
+    #editModal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 20px;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 100;
+      border-radius: 8px;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Position Management</h2>
+
+  <div>
+    <input type="text" id="search" placeholder="Search by name" />
+    <button onclick="fetchPositions()">Search</button>
+  </div>
+
+  <h3>Add New Position</h3>
+  <input type="text" id="new_name" placeholder="Position Name" />
+  <select id="new_reports_to_dropdown">
+    <option value="">None</option>
+  </select>
+  <button onclick="createPosition()">Create</button>
+
+  <h3>All Positions</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Position Name</th>
+        <th>Reports To</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="positions_table">
+      <!-- Rows inserted here -->
+    </tbody>
+  </table>
+
+  <!-- Modal Overlay -->
+  <div id="modalOverlay" onclick="closeEdit()"></div>
+
+  <!-- Edit Modal -->
+  <div id="editModal">
+    <h3>Edit Position Details</h3>
+    <input type="hidden" id="edit_id" />
+    <label>Position Name:</label><br>
+    <input type="text" id="edit_name" /><br><br>
+
+    <label>Reports To:</label><br>
+    <select id="edit_reports_to">
+      <option value="">None</option>
+    </select><br><br>
+
+    <button onclick="submitEdit()">Save</button>
+    <button onclick="closeEdit()">Cancel</button>
+  </div>
+
+<script>
+const API_URL = 'http://127.0.0.1:8000/api/positions';
+let allPositions = [];
+
+function fetchPositions() {
+  const search = document.getElementById('search').value;
+  fetch(`${API_URL}?search=${encodeURIComponent(search)}`)
+    .then(res => res.json())
+    .then(data => {
+      allPositions = data;
+      populateDropdowns();
+      renderTable(data);
+    });
+}
+
+function populateDropdowns() {
+  const newReportsToDropdown = document.getElementById('new_reports_to_dropdown');
+  newReportsToDropdown.innerHTML = '<option value="">None</option>';
+  allPositions.forEach(pos => {
+    const option = document.createElement('option');
+    option.value = pos.position_name;
+    option.textContent = pos.position_name;
+    newReportsToDropdown.appendChild(option);
+  });
+}
+
+function renderTable(data) {
+  const table = document.getElementById('positions_table');
+  table.innerHTML = '';
+  data.forEach(pos => {
+    table.innerHTML += `
+      <tr>
+        <td>${pos.position_name}</td>
+        <td>${pos.reports_to ?? 'None'}</td>
+        <td>
+          <button onclick="deletePosition(${pos.id})">Delete</button>
+          <button onclick="showDetails(${pos.id})">Edit</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function createPosition() {
+  const position_name = document.getElementById('new_name').value;
+  const reports_to = document.getElementById('new_reports_to_dropdown').value || null;
+
+  fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ position_name, reports_to })
+  })
+  .then(res => {
+    if (!res.ok) return res.json().then(err => { throw new Error(err.message || 'Validation error') });
+    return res.json();
+  })
+  .then(() => {
+    alert('Created!');
+    document.getElementById('new_name').value = '';
+    document.getElementById('new_reports_to_dropdown').value = '';
+    fetchPositions();
+  })
+  .catch(err => alert('Error: ' + err.message));
+}
+
+function deletePosition(id) {
+  if (!confirm('Are you sure?')) return;
+  fetch(`${API_URL}/${id}`, { method: 'DELETE' })
+    .then(() => {
+      alert('Deleted!');
+      fetchPositions();
+    });
+}
+
+function showDetails(id) {
+  fetch(`${API_URL}/${id}`)
+    .then(res => res.json())
+    .then(pos => {
+      document.getElementById('edit_id').value = pos.id;
+      document.getElementById('edit_name').value = pos.position_name;
+
+      const dropdown = document.getElementById('edit_reports_to');
+      dropdown.innerHTML = '<option value="">None</option>';
+      allPositions.forEach(p => {
+        if (p.position_name !== pos.position_name) {
+          const option = document.createElement('option');
+          option.value = p.position_name;
+          option.textContent = p.position_name;
+          if (p.position_name === pos.reports_to) option.selected = true;
+          dropdown.appendChild(option);
+        }
+      });
+
+      document.getElementById('modalOverlay').style.display = 'block';
+      document.getElementById('editModal').style.display = 'block';
+    });
+}
+
+function submitEdit() {
+  const id = document.getElementById('edit_id').value;
+  const position_name = document.getElementById('edit_name').value;
+  const reports_to_raw = document.getElementById('edit_reports_to').value;
+  const reports_to = reports_to_raw === '' || reports_to_raw === 'None' ? null : reports_to_raw;
+
+  if (!position_name.trim()) {
+    alert('Position name is required');
+    return;
+  }
+
+  fetch(`${API_URL}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ position_name, reports_to })
+  })
+  .then(res => {
+    if (!res.ok) return res.json().then(err => { throw new Error(err.message || 'Update failed') });
+    return res.json();
+  })
+  .then(() => {
+    alert('Updated!');
+    closeEdit();
+    fetchPositions();
+  })
+  .catch(err => alert('Error: ' + err.message));
+}
+
+function closeEdit() {
+  document.getElementById('modalOverlay').style.display = 'none';
+  document.getElementById('editModal').style.display = 'none';
+}
+
+// Initial load
+fetchPositions();
+</script>
+
+</body>
+</html>
