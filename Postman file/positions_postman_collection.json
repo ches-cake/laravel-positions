@@ -1,0 +1,334 @@
+{
+  "info": {
+    "name": "Position Hierarchy API",
+    "_postman_id": "12345678-1234-1234-1234-123456789abc",
+    "description": "Collection to POST position hierarchy",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create CEO",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"CEO\", \"reports_to\": null}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Manager",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"Manager\", \"reports_to\": \"CEO\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Development Lead",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"Development Lead\", \"reports_to\": \"Manager\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Senior Developer 1",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"Senior Developer 1\", \"reports_to\": \"Development Lead\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Senior Developer 2",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"Senior Developer 2\", \"reports_to\": \"Development Lead\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Developer 1",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"Developer 1\", \"reports_to\": \"Senior Developer 1\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Developer 2",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"Developer 2\", \"reports_to\": \"Senior Developer 1\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Developer 3",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"Developer 3\", \"reports_to\": \"Senior Developer 2\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create QA Lead",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"QA Lead\", \"reports_to\": \"Manager\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Senior QA Tester",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"Senior QA Tester\", \"reports_to\": \"QA Lead\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create QA Tester 1",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"QA Tester 1\", \"reports_to\": \"Senior QA Tester\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create QA Tester 2",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"position_name\": \"QA Tester 2\", \"reports_to\": \"Senior QA Tester\"}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/positions",
+          "host": [
+            "127.0.0.1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "positions"
+          ]
+        }
+      }
+    }
+  ]
+}
